@@ -17,3 +17,4 @@
 ^\.github$
 ^\.Renviron$
 ^vignettes/articles$
+^inst/ns/model_parameters/\.gitkeep\.txt$
