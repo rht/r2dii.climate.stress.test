@@ -36,7 +36,8 @@ run_stress_test <- function(asset_type,
                             shock_year = 2030,
                             term = 2,
                             company_exclusion = TRUE) {
-  validate_input_values(
+  args <- list(
+    asset_type = asset_type,
     lgd_senior_claims = lgd_senior_claims,
     lgd_subordinated_claims = lgd_subordinated_claims,
     terminal_value = terminal_value,
@@ -45,10 +46,25 @@ run_stress_test <- function(asset_type,
     div_netprofit_prop_coef = div_netprofit_prop_coef,
     shock_year = shock_year,
     term = term,
-    company_exclusion = company_exclusion,
-    asset_type = asset_type
+    company_exclusion = company_exclusion
   )
 
+  rlang::exec(validate_input_values, !!!args)
+  rlang::exec(run_stress_test_impl, !!!args)
+
+  invisible(asset_type)
+}
+
+run_stress_test_impl <- function(asset_type,
+                                 lgd_senior_claims = 0.45,
+                                 lgd_subordinated_claims = 0.75,
+                                 terminal_value = 0,
+                                 risk_free_rate = 0.02,
+                                 discount_rate = 0.02,
+                                 div_netprofit_prop_coef = 1,
+                                 shock_year = 2030,
+                                 term = 2,
+                                 company_exclusion = TRUE) {
   scenario_to_follow_baseline <- baseline_scenario_lookup
   scenario_to_follow_ls <- shock_scenario_lookup
   calculation_level <- calculation_level_lookup
