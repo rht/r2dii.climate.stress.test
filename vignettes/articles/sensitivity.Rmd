@@ -1,0 +1,150 @@
+---
+title: "Sensitivity analysis"
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  cache = TRUE,
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+This article explores one way to iterate over multiple values of a single
+argument, for any argument of `run_stress_test_bonds()` (and friends).
+
+### Packages
+
+```{r}
+library(tidyr)
+library(dplyr)
+library(readr)
+library(purrr)
+library(fs)
+library(r2dii.climate.stress.test)
+packageVersion("r2dii.climate.stress.test")
+```
+
+### Functions
+
+I'll define two main functions that do most of the interesting work:
+
+* `exec_stress_test_with()` calls any function from the `run_stress_test_*()`
+family with a list of one element, which name matches the name of one argument,
+and which values are the one you want to iterate over. The output files are
+saved in a destination directory of your choice. It defaults to subdirectories
+inside the outputs/ directory, and their names reflect the name of the argument
+and values used to iterate.
+
+* `combine_outputs()` reads into a directory (and subdirectories), combines the
+outputs of similar types, and records the argument name and argument value in
+dedicated columns `run_arg` and `run_val`. The output is a list of data frames
+that can be easily saved with `purrr::walk2()`.
+
+The other functions are helpers -- including a slightly modified version of
+`run_stress_test_bonds2()` that inputs a destination directory, and suppresses
+the printed output.
+
+```{r}
+#' Call a `run_stress_test_*()` with multiple values of one argumet
+exec_stress_test_with <- function(.fn, params, destdir = NULL) {
+  argument <- names(params)[[1]]
+  values <- unname(unlist(params))
+  
+  lapply(values, function(x) {
+    destdir <- destdir %||% path(outputs_path(), argument, x)
+    args <- append(list(destdir = destdir), as.list(set_names(x, argument)))
+    rlang::exec(.fn, !!!args)
+  })
+  
+  invisible(destdir)
+}
+
+#' Thin wrapper of `run_stress_test_bonds()`
+#' * Hides printed output to highlight more important warnings and errors.
+#' * Makes the output directory an explicit argument.
+#' @examples
+#' run_stress_test_bonds2(tempdir())
+#' # Confirm
+#' dir_ls(tempdir(), regexp = "stress_test")
+run_stress_test_bonds2 <- function(destdir = tempdir(), ...) {
+  output <- capture.output(run_stress_test_bonds(...))
+  
+  from <- dir_ls(outputs_path(), type = "file")
+  dir_create(destdir)
+  new_paths <- path(destdir, path_file(from))
+  file_move(from, new_paths)
+  
+  invisible(destdir)
+}
+
+#' Combine similar outputs spread across subdirectories
+#' @examples
+#' combine_outputs()
+combine_outputs <- function(path = outputs_path()) {
+  files <- dir_ls(path, recurse = TRUE, type = "file")
+  types <- unique(path_file(files))
+  
+  types %>% 
+    map(~read_csv(pick_type(path, .x), id = "arg_val", show_col_types = FALSE)) %>% 
+    map(separate_id) %>% 
+    set_names(types)
+}
+
+pick_type <- function(paths, type) {
+  dir_ls(paths, recurse = TRUE, regexp = type)
+}
+
+#' Create columns that help identify values from different runs
+separate_id <- function(data, into = c("run_arg", "run_val", "dropme")) {
+  data %>% 
+    mutate(arg_val = sub(paste0(outputs_path(), "/"), "", .data$arg_val)) %>% 
+    separate(.data$arg_val, into = into, sep = "/") %>% 
+    select(-.data$dropme)
+}
+
+#' Help access the outputs/ directory
+#' @examples 
+#' outputs_path()
+outputs_path <- function() {
+  path(Sys.getenv("ST_PROJECT_FOLDER"), "outputs")
+}
+```
+
+### Refresh
+
+Empty outputs/.
+
+```{r}
+file_delete(dir_ls(outputs_path()))
+dir_ls(outputs_path())
+```
+
+### Execute
+
+```{r}
+args <- list(lgd_senior_claims = c(0.3, 0.6))
+
+suppressWarnings(
+  exec_stress_test_with(run_stress_test_bonds2, args)
+)
+
+dir_tree(outputs_path())
+```
+
+### Combine
+
+```{r}
+(combined <- combine_outputs())
+```
+
+### Write
+
+```{r}
+dir_ls(outputs_path(), type = "file")
+
+paths <- path(outputs_path(), names(combined))
+walk2(combined, paths, write_csv)
+
+dir_ls(outputs_path(), type = "file")
+```
