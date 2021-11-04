@@ -1,3 +1,11 @@
+#' @importFrom withr local_envvar
+#' @importFrom fs path_home path dir_ls dir_exists dir_create file_copy
+#' @importFrom fs path_file path_ext_remove
+#' @importFrom readr read_csv
+#' @importFrom purrr map
+#' @importFrom tibble enframe
+#' @importFrom dplyr mutate
+#' @importFrom tidyr extract
 #' @importFrom rlang %||% abort warn .data .env
 #' @importFrom magrittr %>%
 #' @importFrom ggplot2 ggplot aes vars geom_col geom_line geom_point geom_hline
