@@ -19,9 +19,12 @@
 #' out <- st(data, asset_type = "bonds")
 #'
 #' out %>%
-#'   st_clean_name() %>%
-#'   filter(name == "comp") %>%
+#'   filter(st_type == "bonds", st_name == "comp") %>%
 #'   unnest(cols = value)
+#'
+#' out %>%
+#'   filter(st_type == "bonds", st_name == "comp") %>%
+#'   unnest(value)
 #' @noRd
 st <- function(data, asset_type, ..., quiet = TRUE) {
   local_envvar(data)
@@ -30,15 +33,17 @@ st <- function(data, asset_type, ..., quiet = TRUE) {
   invisible(f(run_stress_test(asset_type = asset_type, ...)))
 
   paths <- dir_ls(outputs_path())
-  enframe(map(paths, ~read_csv(.x, show_col_types = FALSE), id = "path"))
+  out <- map(paths, ~read_csv(.x, show_col_types = FALSE))
+  out <- enframe(out)
+  out <- clean_name(out)
 }
 
 #' Clean the output of `st()`
 #' @noRd
-st_clean_name <- function(data) {
+clean_name <- function(data) {
   data %>%
     mutate(name = path_file(name)) %>%
     mutate(name = path_ext_remove(name)) %>%
     mutate(name = sub("^stress_test_results_", "", name)) %>%
-    extract(name, into = c("type", "name"), "([^_]+)_(.*)")
+    extract(name, into = c("st_type", "st_name"), "([^_]+)_(.*)")
 }

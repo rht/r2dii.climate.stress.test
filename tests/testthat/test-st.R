@@ -32,7 +32,7 @@ test_that("outputs a data frame", {
   )
 
   expect_s3_class(out, "data.frame")
-  expect_true(hasName(out, "name"))
-  expect_true(hasName(out, "value"))
+  expect_true(hasName(out, "st_type"))
+  expect_true(hasName(out, "st_name"))
 })
 
