@@ -40,7 +40,10 @@ test_that("with bad data errors gracefully", {
   bad <- 1:2
   expect_error(st(bad, asset_type = "bonds"), class = "vctrs_error_assert_ptype")
 
-  bad <- c("too/short")
+  bad <- c("wrong/size")
   expect_error(st(bad, asset_type = "bonds"), class = "vctrs_error_assert_size")
+
+  bad <- c("invalid", "path")
+  expect_error(st(bad, asset_type = "bonds"), "not found")
 })
 
