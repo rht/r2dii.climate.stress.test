@@ -26,9 +26,9 @@
 #' @noRd
 st_data_paths <- function(data = Sys.getenv("ST_DATA_PATH"),
                           project = Sys.getenv("ST_PROJECT_FOLDER")) {
-  vctrs::vec_assert(data, character(), 1L)
-  vctrs::vec_assert(project, character(), 1L)
-  vctrs::vec_set_names(c(data, project), st_envvar_names())
+  vec_assert(data, character(), 1L)
+  vec_assert(project, character(), 1L)
+  vec_set_names(c(data, project), st_envvar_names())
 }
 
 #' Names of required environmental variables

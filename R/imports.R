@@ -1,4 +1,4 @@
-#' @importFrom vctrs vec_assert
+#' @importFrom vctrs vec_assert vec_set_names
 #' @importFrom glue glue
 #' @importFrom withr local_envvar
 #' @importFrom fs path_home path dir_ls dir_exists dir_create file_copy
