@@ -43,14 +43,14 @@ st.character <- function(data, asset_type, ..., quiet = TRUE) {
 st_impl <- function(data, asset_type, ..., quiet = TRUE) {
   local_envvar(data)
 
-  f <- ifelse(quiet, utils::capture.output, identity)
-  invisible(f(run_stress_test(asset_type = asset_type, ...)))
+  control_verbosity <- ifelse(quiet, utils::capture.output, identity)
+  invisible(control_verbosity(run_stress_test(asset_type = asset_type, ...)))
 
-  paths <- dir_ls(outputs_path())
-  out <- map(paths, ~read_csv(.x, show_col_types = FALSE))
-  out <- enframe(out)
-  out <- clean_name(out)
-  out
+  outputs_path() %>%
+    dir_ls() %>%
+    map(~read_csv(.x, show_col_types = FALSE)) %>%
+    enframe() %>%
+    clean_name()
 }
 
 #' Clean the output of `st()`
