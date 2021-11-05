@@ -1,10 +1,9 @@
 #' A version of `run_stress_test()` with visible inputs and outputs
 #'
-#' Inspired by https://design.tidyverse.org/
-#'
-#' @param data A named character vector of length 2. The names must be
-#'   "ST_DATA_PATH" and "ST_PROJECT_FOLDER", and the values must be the paths to
-#'   directories structured as expected by the stress-test project.
+#' @param data Character vector of length 2. Paths to the directories
+#'   ST_INPUTS_MASTER and ST_TESTING_<aset-type>, e.g. ST_TESTING_BONDS,
+#'   respectively. These directories must have the files expected by the
+#'   stress-test project.
 #' @param asset_type An atomic character vector. Either "bonds", "equity", or
 #'   "loans".
 #'
@@ -14,9 +13,7 @@
 #' library(dplyr)
 #' library(tidyr)
 #'
-#' data <- grep("ST_", Sys.getenv(), value = TRUE)
-#'
-#' out <- st(data, asset_type = "bonds")
+#' out <- st(my_data(), asset_type = "bonds")
 #'
 #' out %>%
 #'   filter(st_type == "bonds", st_name == "comp") %>%
@@ -27,20 +24,8 @@
 #'   unnest(value)
 #' @noRd
 st <- function(data, asset_type, ..., quiet = TRUE) {
-  UseMethod("st")
-}
-
-st.default <- function(data, asset_type, ..., quiet = TRUE) {
-  msg <- glue("Can't deal with objects of class {class(data)}")
-  abort(msg, class = "unsupported_class")
-}
-
-st.character <- function(data, asset_type, ..., quiet = TRUE) {
-  vec_assert(data, size = 2L)
-  st_impl(data = data, asset_type = asset_type, ..., quiet = quiet)
-}
-
-st_impl <- function(data, asset_type, ..., quiet = TRUE) {
+  vec_assert(data, character(), size = 2L)
+  data <- setNames(data, envvar_names())
   local_envvar(data)
 
   control_verbosity <- ifelse(quiet, utils::capture.output, identity)
@@ -61,4 +46,8 @@ clean_name <- function(data) {
     mutate(name = path_ext_remove(name)) %>%
     mutate(name = sub("^stress_test_results_", "", name)) %>%
     extract(name, into = c("st_type", "st_name"), "([^_]+)_(.*)")
+}
+
+envvar_names <- function() {
+  c("ST_DATA_PATH", "ST_PROJECT_FOLDER")
 }

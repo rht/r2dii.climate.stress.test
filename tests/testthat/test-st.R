@@ -24,7 +24,7 @@ test_that("is sensitive to data", {
 })
 
 test_that("outputs a data frame", {
-  skip("Temporarily dissable for speed")
+  # skip("Temporarily dissable for speed")
   skip_if_not(is_me())
 
   suppressWarnings(
@@ -37,10 +37,10 @@ test_that("outputs a data frame", {
 })
 
 test_that("with bad data errors gracefully", {
-  bad <- c(bad = "/too/short")
-  expect_error(st(bad, asset_type = "bonds"), class = "vctrs_error_assert_size")
+  bad <- 1:2
+  expect_error(st(bad, asset_type = "bonds"), class = "vctrs_error_assert_ptype")
 
-  not_character <- 1L
-  bad <- c(bad = not_character)
-  expect_error(st(bad, asset_type = "bonds"), class = "unsupported_class")
+  bad <- c("too/short")
+  expect_error(st(bad, asset_type = "bonds"), class = "vctrs_error_assert_size")
 })
+
