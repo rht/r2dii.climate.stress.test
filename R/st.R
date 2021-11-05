@@ -1,7 +1,7 @@
 #' A version of `run_stress_test()` with visible inputs and outputs
 #'
 #' @param data Character vector of length 2. Paths to the directories
-#'   ST_INPUTS_MASTER and ST_TESTING_<aset-type>, e.g. ST_TESTING_BONDS,
+#'   ST_INPUTS_MASTER and ST_TESTING_\{aset-type\}, e.g. ST_TESTING_BONDS,
 #'   respectively. These directories must have the files expected by the
 #'   stress-test project.
 #' @param asset_type An atomic character vector. Either "bonds", "equity", or

@@ -1,9 +1,13 @@
-is_me <- function() {
-  identical(path.expand("~"), "/home/mauro")
-}
-
-my_data <- function() {
-  grep("ST_", Sys.getenv(), value = TRUE)
+#' Allow running tests selectively, only for registered developers
+#'
+#' @return Logical.
+#' @export
+#'
+#' @examples
+#' is_registered_dev()
+#' is_registered_dev("home/you/")
+is_registered_dev <- function(my_home = "/home/mauro") {
+  identical(path.expand("~"), my_home)
 }
 
 expect_no_output <- function(object, ...) {

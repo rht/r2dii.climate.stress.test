@@ -1,5 +1,5 @@
 test_that("works with bonds", {
-  skip_if_not(is_me())
+  skip_if_not(is_registered_dev())
 
   none <- NA
   expect_error({
