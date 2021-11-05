@@ -24,11 +24,11 @@ test_that("is sensitive to data", {
 })
 
 test_that("outputs a data frame", {
+  skip("Temporarily dissable for speed")
   skip_if_not(is_me())
 
-  data <- my_data()
   suppressWarnings(
-    out <- st(data, asset_type = "bonds")
+    out <- st(my_data(), asset_type = "bonds")
   )
 
   expect_s3_class(out, "data.frame")
@@ -36,3 +36,11 @@ test_that("outputs a data frame", {
   expect_true(hasName(out, "st_name"))
 })
 
+test_that("with bad data errors gracefully", {
+  bad <- c(bad = "/too/short")
+  expect_error(st(bad, asset_type = "bonds"), class = "vctrs_error_assert_size")
+
+  not_character <- 1L
+  bad <- c(bad = not_character)
+  expect_error(st(bad, asset_type = "bonds"), class = "unsupported_class")
+})

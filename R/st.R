@@ -27,6 +27,20 @@
 #'   unnest(value)
 #' @noRd
 st <- function(data, asset_type, ..., quiet = TRUE) {
+  UseMethod("st")
+}
+
+st.default <- function(data, asset_type, ..., quiet = TRUE) {
+  msg <- glue("Can't deal with objects of class {class(data)}")
+  abort(msg, class = "unsupported_class")
+}
+
+st.character <- function(data, asset_type, ..., quiet = TRUE) {
+  vec_assert(data, size = 2L)
+  st_impl(data = data, asset_type = asset_type, ..., quiet = quiet)
+}
+
+st_impl <- function(data, asset_type, ..., quiet = TRUE) {
   local_envvar(data)
 
   f <- ifelse(quiet, utils::capture.output, identity)
@@ -36,6 +50,7 @@ st <- function(data, asset_type, ..., quiet = TRUE) {
   out <- map(paths, ~read_csv(.x, show_col_types = FALSE))
   out <- enframe(out)
   out <- clean_name(out)
+  out
 }
 
 #' Clean the output of `st()`
