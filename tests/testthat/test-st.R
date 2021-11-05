@@ -1,5 +1,5 @@
 test_that("is sensitive to `quiet`", {
-  skip("Temporarily dissable for speed")
+  #skip("Temporarily dissable for speed")
   skip_if_not(is_registered_dev())
 
   expect_no_output(suppressWarnings(
@@ -14,7 +14,7 @@ test_that("is sensitive to `quiet`", {
 })
 
 test_that("is sensitive to data", {
-  skip("Temporarily dissable for speed")
+  #skip("Temporarily dissable for speed")
   skip_if_not(is_registered_dev())
 
   expect_error(st(asset_type = "bonds"), "data.*missing")
@@ -24,7 +24,7 @@ test_that("is sensitive to data", {
 })
 
 test_that("outputs a data frame", {
-  # skip("Temporarily dissable for speed")
+  # #skip("Temporarily dissable for speed")
   skip_if_not(is_registered_dev())
 
   suppressWarnings(
