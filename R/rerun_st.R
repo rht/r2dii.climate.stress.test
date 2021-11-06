@@ -1,4 +1,4 @@
-#' Sensitivity analysis: Rerun `run_stress_test()` multiple times
+#' Sensitivity analysis: `run_stress_test()` multiple times
 #'
 #' This function performs the so called "sensitivity analysis". It runs
 #' [run_stress_test()] multiple times, iterating over multiple values of one and

@@ -2,7 +2,7 @@
 % Please edit documentation in R/rerun_st.R
 \name{rerun_st}
 \alias{rerun_st}
-\title{Sensitivity analysis: Rerun \code{run_stress_test()} multiple times}
+\title{Sensitivity analysis: \code{run_stress_test()} multiple times}
 \usage{
 rerun_st(data, asset_type, ..., quiet = TRUE)
 }
