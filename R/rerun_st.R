@@ -20,6 +20,27 @@
 #' @export
 #'
 #' @examples
+#' library(dplyr, warn.conflicts = FALSE)
+#' library(readr, warn.conflicts = FALSE)
+#' library(tidyr)
+#'
+#' (data <- st_data_paths())
+#' compact <- suppressWarnings(rerun_st(data, "bonds", term = c(1, 2, 3)))
+#'
+#' # A compact view of all your results
+#' compact
+#'
+#' # The full view of all your results
+#' full <- unnest(compact, st_result)
+#'
+#' # You may save the result
+#' path <- tempfile()
+#' write_csv(out2, file = path)
+#' # and eventually re-read it
+#' read_csv(path)
+#'
+#' # Or explore interesting results
+#' full %>% filter(st_name == "port", arg_value == 2)
 rerun_st <- function(data, asset_type, ..., quiet = TRUE) {
   dots <- list2(...)
   long <- keep(dots, ~ length(.x) > 1L) %>%

@@ -27,6 +27,29 @@ This function performs the so called "sensitivity analysis". It runs
 \code{\link[=run_stress_test]{run_stress_test()}} multiple times, iterating over multiple values of one and
 only one argument of \code{\link[=run_stress_test]{run_stress_test()}}.
 }
+\examples{
+library(dplyr, warn.conflicts = FALSE)
+library(readr, warn.conflicts = FALSE)
+library(tidyr)
+
+(data <- st_data_paths())
+compact <- suppressWarnings(rerun_st(data, "bonds", term = c(1, 2, 3)))
+
+# A compact view of all your results
+compact
+
+# The full view of all your results
+full <- unnest(compact, st_result)
+
+# You may save the result
+path <- tempfile()
+write_csv(out2, file = path)
+# and eventually re-read it
+read_csv(path)
+
+# Or explore interesting results
+full \%>\% filter(st_name == "port", arg_value == 2)
+}
 \seealso{
 \code{\link[=run_stress_test]{run_stress_test()}}.
 }
