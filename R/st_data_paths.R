@@ -1,13 +1,15 @@
 #' Path to stress-test inputs
 #'
-#' This function helps expose hidden inputs to `run_stress_test()` so they are
-#' clear and easier to program with.
+#' This function helps expose the paths to `run_stress_test()` inputs.
 #'
 #' @param data Character. Path to the data directory.
 #' @param project Character. Path to the project directory.
 #'
 #' @return A character vector.
 #'
+#' @family helpers
+#'
+#' @export
 #' @examples
 #' library(withr)
 #'
@@ -23,7 +25,6 @@
 #' })
 #' Sys.getenv("ST_DATA_PATH")
 #' Sys.getenv("ST_PROJECT_FOLDER")
-#' @noRd
 st_data_paths <- function(data = Sys.getenv("ST_DATA_PATH"),
                           project = Sys.getenv("ST_PROJECT_FOLDER")) {
   vec_assert(data, character(), 1L)
