@@ -5,19 +5,13 @@ st_map <- function(data, asset_type, ..., quiet = TRUE) {
     abort_if_more_than_one_argument_is_long()
 
   dots1 <- dots[setdiff(names(dots), names(long))]
-  args1 <- list2(
-    data = data,
-    asset_type = asset_type,
-    !!!dots1,
-    quiet = quiet
-  )
-
+  args1 <- list2(data = data, asset_type = asset_type, !!!dots1, quiet = quiet)
   nms <- names(long)
   val <- unlist(long)
   x <- vec_set_names(val, glue("{nms}___{val}"))
-  args_lst <- map(x, ~append(args1, vec_set_names(.x, nms)))
 
-  args_lst %>%
+  x %>%
+    map(~append(args1, vec_set_names(.x, nms))) %>%
     map(~exec(st, !!!.x)) %>%
     enframe(value = "st_result") %>%
     restructure_st_map()
