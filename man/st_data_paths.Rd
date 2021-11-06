@@ -25,10 +25,10 @@ library(withr)
 
 st_data_paths()
 
-st_data_paths"/my/data", "/my/project/")
+st_data_paths("/my/data", "/my/project/")
 
 local({
-  local_envvar(st_data_paths"/my/data", "/my/project/"))
+  local_envvar(st_data_paths("/my/data", "/my/project/"))
 
   print(Sys.getenv("ST_DATA_PATH"))
   print(Sys.getenv("ST_PROJECT_FOLDER"))
