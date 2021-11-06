@@ -13,7 +13,7 @@
 #' @param ... Arguments passed to [run_stress_test()].
 #' @param quiet Logical. Print non-condiiton messages to the console?
 #'
-#' @seealso [run_stress_test()].
+#' @family main functions
 #'
 #' @return A data frame.
 #'

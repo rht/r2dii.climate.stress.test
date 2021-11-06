@@ -55,3 +55,8 @@ excluded_companies.csv shall be excluded.}
 \description{
 Run stress testing for provided asset type.
 }
+\seealso{
+Other main functions: 
+\code{\link{rerun_st}()}
+}
+\concept{main functions}

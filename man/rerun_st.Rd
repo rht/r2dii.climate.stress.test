@@ -51,5 +51,7 @@ read_csv(path)
 full \%>\% filter(st_name == "port", arg_value == 2)
 }
 \seealso{
-\code{\link[=run_stress_test]{run_stress_test()}}.
+Other main functions: 
+\code{\link{run_stress_test}()}
 }
+\concept{main functions}
