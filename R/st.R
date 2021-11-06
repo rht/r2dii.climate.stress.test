@@ -38,8 +38,6 @@ st <- function(data, asset_type, ..., quiet = TRUE) {
     restructure_st()
 }
 
-#' Clean the output of `st()`
-#' @noRd
 restructure_st <- function(data) {
   data %>%
     mutate(name = path_file(name)) %>%

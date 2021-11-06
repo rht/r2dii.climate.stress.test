@@ -1,4 +1,4 @@
-st_map <- function(data, asset_type, ..., quiet = TRUE) {
+rerun_st <- function(data, asset_type, ..., quiet = TRUE) {
   dots <- list2(...)
   long <- keep(dots, ~ length(.x) > 1L) %>%
     abort_if_no_argument_is_long() %>%
@@ -14,7 +14,7 @@ st_map <- function(data, asset_type, ..., quiet = TRUE) {
     map(~ append(args1, vec_set_names(.x, nms))) %>%
     map(~ exec(st, !!!.x)) %>%
     enframe(value = "st_result") %>%
-    restructure_st_map()
+    restructure_rerun_st()
 }
 
 abort_if_no_argument_is_long <- function(data) {
@@ -40,7 +40,7 @@ abort_if_more_than_one_argument_is_long <- function(data) {
   invisible(data)
 }
 
-restructure_st_map <- function(data) {
+restructure_rerun_st <- function(data) {
   data %>%
     separate(.data$name, into = c("arg_name", "arg_value"), sep = "___") %>%
     unnest(cols = .data$st_result) %>%
