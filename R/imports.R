@@ -6,8 +6,8 @@
 #' @importFrom readr read_csv
 #' @importFrom purrr map
 #' @importFrom tibble enframe
-#' @importFrom dplyr mutate
-#' @importFrom tidyr extract
+#' @importFrom dplyr mutate rename relocate
+#' @importFrom tidyr extract separate unnest
 #' @importFrom rlang %||% abort warn .data .env
 #' @importFrom magrittr %>%
 #' @importFrom ggplot2 ggplot aes vars geom_col geom_line geom_point geom_hline
