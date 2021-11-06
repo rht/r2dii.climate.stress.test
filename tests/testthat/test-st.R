@@ -49,4 +49,3 @@ test_that("with bad `data` errors gracefully", {
   bad <- c("invalid", "path")
   expect_error(st(bad, asset_type = "bonds"), "valid.*not")
 })
-
