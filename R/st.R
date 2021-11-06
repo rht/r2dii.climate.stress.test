@@ -17,11 +17,11 @@
 #'
 #' out %>%
 #'   filter(st_type == "bonds", st_name == "comp") %>%
-#'   unnest(cols = value)
+#'   unnest(cols = result)
 #'
 #' out %>%
 #'   filter(st_type == "bonds", st_name == "comp") %>%
-#'   unnest(value)
+#'   unnest(result)
 #' @noRd
 st <- function(data, asset_type, ..., quiet = TRUE) {
   vec_assert(data, character(), size = 2L)
@@ -34,13 +34,13 @@ st <- function(data, asset_type, ..., quiet = TRUE) {
   outputs_path() %>%
     dir_ls() %>%
     map(~read_csv(.x, show_col_types = FALSE)) %>%
-    enframe() %>%
-    clean_name()
+    enframe(value = "st_result") %>%
+    restructure_st()
 }
 
 #' Clean the output of `st()`
 #' @noRd
-clean_name <- function(data) {
+restructure_st <- function(data) {
   data %>%
     mutate(name = path_file(name)) %>%
     mutate(name = path_ext_remove(name)) %>%

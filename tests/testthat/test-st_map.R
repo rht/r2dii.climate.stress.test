@@ -39,5 +39,6 @@ test_that("iterates over the long argument", {
   )
 
   expect_s3_class(out, "data.frame")
-  expect_named(out, c("st_type", "st_name", "arg_name", "arg_value", "result"))
+  nms <- c("st_type", "st_name", "arg_name", "arg_value", "st_result")
+  expect_named(out, nms)
 })

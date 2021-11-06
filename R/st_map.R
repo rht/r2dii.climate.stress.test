@@ -27,15 +27,18 @@ st_map <- function(data, asset_type, ..., quiet = TRUE) {
 
   nms <- names(long)
   val <- unlist(long)
-  x <- vec_set_names(val, glue("{nms}__{val}"))
+  x <- vec_set_names(val, glue("{nms}___{val}"))
   args_lst <- map(x, ~append(args1, vec_set_names(.x, nms)))
 
-  out <- map(args_lst, ~rlang::exec(st, !!!.x))
+  args_lst %>%
+    map(~exec(st, !!!.x)) %>%
+    enframe(value = "st_result") %>%
+    restructure_st_map()
+}
 
-  out %>%
-    enframe() %>%
-    separate(.data$name, into = c("arg_name", "arg_value"), sep = "__") %>%
-    unnest(cols = .data$value) %>%
-    rename(result = .data$value) %>%
+restructure_st_map <- function(data) {
+  data %>%
+    separate(.data$name, into = c("arg_name", "arg_value"), sep = "___") %>%
+    unnest(cols = .data$st_result) %>%
     relocate(.data$st_type, .data$st_name)
 }
