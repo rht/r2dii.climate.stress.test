@@ -2,6 +2,13 @@ st_map <- function(data, asset_type, ..., quiet = TRUE) {
   dots <- rlang::list2(...)
   long <- purrr::keep(dots, ~length(.x) > 1L)
 
+  if (identical(length(long), 0L)) {
+    abort(c(
+      "Must privide one argument of `run_stress_test()` with multiple values.",
+      i = "Do you need to use `run_stress_test()` instead?"
+    ))
+  }
+
   if (length(long) > 1L) {
     abort(c(
       "Must provide no more than one argument with multiple values.",
@@ -21,8 +28,10 @@ st_map <- function(data, asset_type, ..., quiet = TRUE) {
   nms <- names(long)
   val <- unlist(long)
   x <- vec_set_names(val, glue("{nms}__{val}"))
-  args_lst <- map(x, ~append(args1, vec_set_names(.x, names(long))))
+  args_lst <- map(x, ~append(args1, vec_set_names(.x, nms)))
+
   out <- map(args_lst, ~rlang::exec(st, !!!.x))
+
   out %>%
     enframe() %>%
     separate(.data$name, into = c("arg_name", "arg_value"), sep = "__") %>%
