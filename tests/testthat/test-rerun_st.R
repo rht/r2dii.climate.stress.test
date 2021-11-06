@@ -48,10 +48,3 @@ test_that("iterates over the long argument", {
   nms <- c("st_type", "st_name", "arg_name", "arg_value", "st_result")
   expect_named(out, nms)
 })
-
-test_that("works with integer inputs of `term`", {
-  data <- st_data_paths()
-  expect_no_error(
-    rerun_st(data, "bonds", term = 1:2)
-  )
-})
