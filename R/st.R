@@ -25,7 +25,7 @@
 #' @noRd
 st <- function(data, asset_type, ..., quiet = TRUE) {
   vec_assert(data, character(), size = 2L)
-  data <- setNames(data, envvar_names())
+  data <- vec_set_names(data, envvar_names())
   local_envvar(data)
 
   control_verbosity <- ifelse(quiet, utils::capture.output, identity)
