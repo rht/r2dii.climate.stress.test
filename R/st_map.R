@@ -1,9 +1,8 @@
 st_map <- function(data, asset_type, ..., quiet = TRUE) {
   dots <- list2(...)
-  long <- keep(dots, ~length(.x) > 1L)
-
-  abort_if_no_argument_is_long(long)
-  abort_if_more_than_one_argument_is_long(long)
+  long <- keep(dots, ~length(.x) > 1L) %>%
+    abort_if_no_argument_is_long() %>%
+    abort_if_more_than_one_argument_is_long()
 
   dots1 <- dots[setdiff(names(dots), names(long))]
   args1 <- list2(
