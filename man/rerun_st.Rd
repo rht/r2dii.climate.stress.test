@@ -43,7 +43,7 @@ full <- unnest(compact, st_result)
 
 # You may save the result
 path <- tempfile()
-write_csv(out2, file = path)
+write_csv(full, file = path)
 # and eventually re-read it
 read_csv(path)
 
