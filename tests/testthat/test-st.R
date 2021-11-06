@@ -1,5 +1,4 @@
 test_that("is sensitive to `quiet`", {
-  skip("Temporarily dissable for speed")
   skip_if_not(is_registered_dev())
 
   expect_no_output(suppressWarnings(
@@ -14,7 +13,6 @@ test_that("is sensitive to `quiet`", {
 })
 
 test_that("is sensitive to data", {
-  skip("Temporarily dissable for speed")
   skip_if_not(is_registered_dev())
 
   expect_error(st(asset_type = "bonds"), "data.*missing")
@@ -24,12 +22,9 @@ test_that("is sensitive to data", {
 })
 
 test_that("outputs a data frame", {
-  # skip("Temporarily dissable for speed")
   skip_if_not(is_registered_dev())
 
-  suppressWarnings(
-    out <- st(st_data_paths(), asset_type = "bonds")
-  )
+  suppressWarnings(out <- st(st_data_paths(), asset_type = "bonds"))
 
   expect_s3_class(out, "data.frame")
   expect_true(hasName(out, "st_type"))
@@ -37,6 +32,8 @@ test_that("outputs a data frame", {
 })
 
 test_that("with bad `data` errors gracefully", {
+  skip_if_not(is_registered_dev())
+
   bad <- c(1:2, NULL)
   expect_error(
     class = "vctrs_error_assert_ptype",
