@@ -10,6 +10,7 @@
 #' @family helpers
 #'
 #' @export
+#'
 #' @examples
 #' library(withr)
 #'

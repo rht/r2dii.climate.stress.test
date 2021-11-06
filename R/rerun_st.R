@@ -37,7 +37,7 @@
 #' path <- tempfile()
 #' write_csv(full, file = path)
 #' # and eventually re-read it
-#' read_csv(path)
+#' read_csv(path, show_col_types = FALSE)
 #'
 #' # Or explore interesting results
 #' full %>% filter(st_name == "port", arg_value == 2)
