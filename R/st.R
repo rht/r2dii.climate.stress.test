@@ -33,7 +33,7 @@ st <- function(data, asset_type, ..., quiet = TRUE) {
 
   outputs_path() %>%
     dir_ls() %>%
-    map(~read_csv(.x, show_col_types = FALSE)) %>%
+    map(~ read_csv(.x, show_col_types = FALSE)) %>%
     enframe(value = "st_result") %>%
     restructure_st()
 }
