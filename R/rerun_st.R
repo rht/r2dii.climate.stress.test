@@ -22,7 +22,7 @@
 #' @examples
 #' library(dplyr, warn.conflicts = FALSE)
 #' library(readr, warn.conflicts = FALSE)
-#' library(tidyr)
+#' library(tidyr, warn.conflicts = FALSE)
 #'
 #' (data <- st_data_paths())
 #' compact <- suppressWarnings(rerun_st(data, "bonds", term = c(1, 2, 3)))
@@ -36,11 +36,12 @@
 #' # You may save the result
 #' path <- tempfile()
 #' write_csv(full, file = path)
-#' # and eventually re-read it
+#'
+#' # And eventually re-read it
 #' read_csv(path, show_col_types = FALSE)
 #'
 #' # Or explore interesting results
-#' full %>% filter(st_name == "port", arg_value == 2)
+#' filter(full, st_name == "port", arg_value == 2)
 rerun_st <- function(data, asset_type, ..., quiet = TRUE) {
   dots <- list2(...)
   long <- keep(dots, ~ length(.x) > 1L) %>%
@@ -51,10 +52,10 @@ rerun_st <- function(data, asset_type, ..., quiet = TRUE) {
   args1 <- list2(data = data, asset_type = asset_type, !!!dots1, quiet = quiet)
   nms <- names(long)
   val <- unlist(long)
-  x <- vec_set_names(val, glue("{nms}___{val}"))
+  x <- vec_set_names(val, glue("{nms}___{val}")) %>%
+    map(~ append(args1, vec_set_names(.x, nms)))
 
   x %>%
-    map(~ append(args1, vec_set_names(.x, nms))) %>%
     map(~ exec(st, !!!.x)) %>%
     enframe(value = "st_result") %>%
     restructure_rerun_st()

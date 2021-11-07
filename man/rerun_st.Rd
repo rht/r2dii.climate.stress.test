@@ -30,7 +30,7 @@ only one argument of \code{\link[=run_stress_test]{run_stress_test()}}.
 \examples{
 library(dplyr, warn.conflicts = FALSE)
 library(readr, warn.conflicts = FALSE)
-library(tidyr)
+library(tidyr, warn.conflicts = FALSE)
 
 (data <- st_data_paths())
 compact <- suppressWarnings(rerun_st(data, "bonds", term = c(1, 2, 3)))
@@ -44,11 +44,12 @@ full <- unnest(compact, st_result)
 # You may save the result
 path <- tempfile()
 write_csv(full, file = path)
-# and eventually re-read it
+
+# And eventually re-read it
 read_csv(path, show_col_types = FALSE)
 
 # Or explore interesting results
-full \%>\% filter(st_name == "port", arg_value == 2)
+filter(full, st_name == "port", arg_value == 2)
 }
 \seealso{
 Other main functions: 

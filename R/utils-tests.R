@@ -1,11 +1,11 @@
 #' Allow running tests selectively, only for registered developers
 #'
 #' @return Logical.
-#' @export
 #'
 #' @examples
 #' is_registered_dev()
 #' is_registered_dev("home/you/")
+#' @noRd
 is_registered_dev <- function(my_home = "/home/mauro") {
   identical(path.expand("~"), my_home)
 }
