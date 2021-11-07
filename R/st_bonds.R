@@ -53,6 +53,18 @@ st_bonds <- function(data = st_data_paths(), ..., quiet = TRUE) {
 
 #' @rdname st_bonds
 #' @export
+st_equity <- function(data = st_data_paths(), ..., quiet = TRUE) {
+  st_df(data, asset_type = "equity", ..., quiet = quiet)
+}
+
+#' @rdname st_bonds
+#' @export
+st_loans <- function(data = st_data_paths(), ..., quiet = TRUE) {
+  st_df(data, asset_type = "loans", ..., quiet = quiet)
+}
+
+#' @rdname st_bonds
+#' @export
 st_write_bonds <- function(data = st_data_paths(),
                            destdir = tempdir(),
                            ...,
@@ -76,18 +88,6 @@ st_write_loans <- function(data = st_data_paths(),
                            ...,
                            quiet = TRUE) {
   st_write(data, asset_type = "loans", destdir = destdir, ..., quiet = quiet)
-}
-
-#' @rdname st_bonds
-#' @export
-st_equity <- function(data = st_data_paths(), ..., quiet = TRUE) {
-  st_df(data, asset_type = "equity", ..., quiet = quiet)
-}
-
-#' @rdname st_bonds
-#' @export
-st_loans <- function(data = st_data_paths(), ..., quiet = TRUE) {
-  st_df(data, asset_type = "loans", ..., quiet = quiet)
 }
 
 st_df <- function(data, asset_type, ..., quiet = TRUE) {

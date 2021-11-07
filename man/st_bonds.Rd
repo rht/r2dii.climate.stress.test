@@ -2,24 +2,24 @@
 % Please edit documentation in R/st_bonds.R
 \name{st_bonds}
 \alias{st_bonds}
+\alias{st_equity}
+\alias{st_loans}
 \alias{st_write_bonds}
 \alias{st_write_equity}
 \alias{st_write_loans}
-\alias{st_equity}
-\alias{st_loans}
 \title{Sensitivity analysis: \code{run_stress_test()} multiple times}
 \usage{
 st_bonds(data = st_data_paths(), ..., quiet = TRUE)
+
+st_equity(data = st_data_paths(), ..., quiet = TRUE)
+
+st_loans(data = st_data_paths(), ..., quiet = TRUE)
 
 st_write_bonds(data = st_data_paths(), destdir = tempdir(), ..., quiet = TRUE)
 
 st_write_equity(data = st_data_paths(), destdir = tempdir(), ..., quiet = TRUE)
 
 st_write_loans(data = st_data_paths(), destdir = tempdir(), ..., quiet = TRUE)
-
-st_equity(data = st_data_paths(), ..., quiet = TRUE)
-
-st_loans(data = st_data_paths(), ..., quiet = TRUE)
 }
 \arguments{
 \item{data}{Character vector of length 2. Paths to the directories
