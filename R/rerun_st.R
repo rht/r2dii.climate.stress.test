@@ -43,6 +43,15 @@
 #' # Or explore interesting results
 #' filter(full, st_name == "port", arg_value == 2)
 rerun_st <- function(data, asset_type, ..., quiet = TRUE) {
+  args <- enlist_args(data, asset_type, ..., quiet = quiet)
+
+  args %>%
+    map(~ exec(st, !!!.x)) %>%
+    enframe(value = "st_result") %>%
+    restructure_rerun_st()
+}
+
+enlist_args <- function(data, asset_type, ..., quiet) {
   dots <- list2(...)
   long <- keep(dots, ~ length(.x) > 1L) %>%
     abort_if_no_argument_is_long() %>%
@@ -52,13 +61,9 @@ rerun_st <- function(data, asset_type, ..., quiet = TRUE) {
   args1 <- list2(data = data, asset_type = asset_type, !!!dots1, quiet = quiet)
   nms <- names(long)
   val <- unlist(long)
-  x <- vec_set_names(val, glue("{nms}___{val}")) %>%
-    map(~ append(args1, vec_set_names(.x, nms)))
 
-  x %>%
-    map(~ exec(st, !!!.x)) %>%
-    enframe(value = "st_result") %>%
-    restructure_rerun_st()
+  vec_set_names(val, glue("{nms}___{val}")) %>%
+    map(~ append(args1, vec_set_names(.x, nms)))
 }
 
 abort_if_no_argument_is_long <- function(data) {
