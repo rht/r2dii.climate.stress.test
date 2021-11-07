@@ -2,7 +2,14 @@ url: ~
 
 reference:
 - title: Main functions
-  contents: has_concept("main functions")
+  contents:
+  - run_stress_test
+  - st_write_bonds
+  - st_write_equity
+  - st_write_loans
+  - st_bonds
+  - st_equity
+  - st_loans
 - title: Helper functions
   contents:
   - has_concept("helpers")

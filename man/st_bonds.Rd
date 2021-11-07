@@ -68,8 +68,8 @@ suppressWarnings(st_write_bonds(destdir = path, term = c(1, 2)))
 
 # You may read all results at once
 runs <- dir_ls(path, recurse = TRUE)
-results <- read_csv(runs, id = "arg___val", show_col_types = FALSE)
-mutate(results, arg___val = path_ext_remove(path_file(arg___val)))
+results <- read_csv(runs, id = "arg_val", show_col_types = FALSE)
+mutate(results, arg_val = path_ext_remove(path_file(arg_val)))
 \dontshow{\}) # examplesIf}
 }
 \seealso{
