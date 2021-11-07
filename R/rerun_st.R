@@ -25,8 +25,8 @@
 #' library(tidyr, warn.conflicts = FALSE)
 #'
 #' data <- st_data_paths(
-#'   data = "home/mauro/tmp/st/ST_INPUTS_MASTER,
-#'   project = "home/mauro/tmp/st/ST_TESTING_BONDS
+#'   data = "/home/mauro/tmp/st/ST_INPUTS_MASTER",
+#'   project = "/home/mauro/tmp/st/ST_TESTING_BONDS"
 #' )
 #'
 #' compact <- suppressWarnings(
