@@ -28,12 +28,19 @@ This function performs the so called "sensitivity analysis". It runs
 only one argument of \code{\link[=run_stress_test]{run_stress_test()}}.
 }
 \examples{
+\dontshow{if (r2dii.climate.stress.test:::is_registered_dev()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 library(dplyr, warn.conflicts = FALSE)
 library(readr, warn.conflicts = FALSE)
 library(tidyr, warn.conflicts = FALSE)
 
-(data <- st_data_paths())
-compact <- suppressWarnings(rerun_st(data, "bonds", term = c(1, 2, 3)))
+data <- st_data_paths(
+  data = "home/mauro/tmp/st/ST_INPUTS_MASTER,
+  project = "home/mauro/tmp/st/ST_TESTING_BONDS
+)
+
+compact <- suppressWarnings(
+  rerun_st(data, "bonds", term = c(1, 2, 3))
+)
 
 # A compact view of all your results
 compact
@@ -50,6 +57,7 @@ read_csv(path, show_col_types = FALSE)
 
 # Or explore interesting results
 filter(full, st_name == "port", arg_value == 2)
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other main functions: 

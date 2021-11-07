@@ -19,13 +19,19 @@
 #'
 #' @export
 #'
-#' @examples
+#' @examplesIf r2dii.climate.stress.test:::is_registered_dev()
 #' library(dplyr, warn.conflicts = FALSE)
 #' library(readr, warn.conflicts = FALSE)
 #' library(tidyr, warn.conflicts = FALSE)
 #'
-#' (data <- st_data_paths())
-#' compact <- suppressWarnings(rerun_st(data, "bonds", term = c(1, 2, 3)))
+#' data <- st_data_paths(
+#'   data = "home/mauro/tmp/st/ST_INPUTS_MASTER,
+#'   project = "home/mauro/tmp/st/ST_TESTING_BONDS
+#' )
+#'
+#' compact <- suppressWarnings(
+#'   rerun_st(data, "bonds", term = c(1, 2, 3))
+#' )
 #'
 #' # A compact view of all your results
 #' compact
