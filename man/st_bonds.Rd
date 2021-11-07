@@ -45,6 +45,7 @@ over multiple values of one and only one argument of \code{\link[=run_stress_tes
 \examples{
 \dontshow{if (r2dii.climate.stress.test:::is_registered_dev()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 library(fs)
+library(dplyr, warn.conflicts = FALSE)
 library(readr, warn.conflicts = FALSE)
 
 # Give the paths to your data explicitely
@@ -66,7 +67,9 @@ dir_create(path)
 suppressWarnings(st_write_bonds(destdir = path, term = c(1, 2)))
 
 # You may read all results at once
-read_csv(dir_ls(path, recurse = TRUE), id = "path", show_col_types = FALSE)
+runs <- dir_ls(path, recurse = TRUE)
+results <- read_csv(runs, id = "arg___val", show_col_types = FALSE)
+mutate(results, arg___val = path_ext_remove(path_file(arg___val)))
 \dontshow{\}) # examplesIf}
 }
 \seealso{
