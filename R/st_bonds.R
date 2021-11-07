@@ -9,6 +9,7 @@
 #'   respectively. These directories must have the files expected by the
 #'   stress-test project. The easiest way to create this object is with
 #'   [st_data_paths()].
+#' @param destdir Character. Path to a destination directory.
 #' @param ... Arguments passed to [run_stress_test()].
 #' @param quiet Logical. Print non-condiiton messages to the console?
 #'
