@@ -20,41 +20,23 @@
 #' @export
 #'
 #' @examplesIf r2dii.climate.stress.test:::is_registered_dev()
-#' library(dplyr, warn.conflicts = FALSE)
-#' library(readr, warn.conflicts = FALSE)
-#' library(tidyr, warn.conflicts = FALSE)
-#'
 #' data <- st_data_paths(
 #'   data = "/home/mauro/tmp/st/ST_INPUTS_MASTER",
 #'   project = "/home/mauro/tmp/st/ST_TESTING_BONDS"
 #' )
 #'
-#' compact <- suppressWarnings(
-#'   rerun_st(data, "bonds", term = c(1, 2, 3))
-#' )
+#' out <- rerun_st(data, "bonds", term = c(1, 2, 3))
 #'
-#' # A compact view of all your results
-#' compact
-#'
-#' # The full view of all your results
-#' full <- unnest(compact, st_result)
-#'
-#' # You may save the result
-#' path <- tempfile()
-#' write_csv(full, file = path)
-#'
-#' # And eventually re-read it
-#' read_csv(path, show_col_types = FALSE)
-#'
-#' # Or explore interesting results
-#' filter(full, st_name == "port", arg_value == 2)
+#' # The data frame output helps you quickly explore and manipulate your results
+#' subset(out, st_name == "port" & arg_value == 2)
 rerun_st <- function(data, asset_type, ..., quiet = TRUE) {
   args <- enlist_args(data, asset_type, ..., quiet = quiet)
 
   args %>%
     map(~ exec(st, !!!.x)) %>%
     enframe(value = "st_result") %>%
-    restructure_rerun_st()
+    restructure_rerun_st() %>%
+    unnest(st_result)
 }
 
 enlist_args <- function(data, asset_type, ..., quiet) {
