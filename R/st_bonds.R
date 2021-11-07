@@ -56,9 +56,9 @@ st_write_bonds <- function(data = st_data_paths(),
 #' @rdname st_bonds
 #' @export
 st_write_equity <- function(data = st_data_paths(),
-                           destdir = tempdir(),
-                           ...,
-                           quiet = TRUE) {
+                            destdir = tempdir(),
+                            ...,
+                            quiet = TRUE) {
   st_write(data, asset_type = "equity", destdir = destdir, ..., quiet = quiet)
 }
 
