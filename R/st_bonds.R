@@ -25,10 +25,10 @@
 #'   data = "/home/mauro/tmp/st/ST_INPUTS_MASTER",
 #'   project = "/home/mauro/tmp/st/ST_TESTING_BONDS"
 #' )
-#' out <- st_bonds(data, term = c(1, 2), shock_year = 2031)
-#'
 #' # Or set these environment variables (e.g. in .Renviron), then omit `data`
-#' readLines(".Renviron")
+#' data
+#'
+#' out <- st_bonds(term = c(1, 2), shock_year = 2031)
 #'
 #' # The data frame output helps you quickly explore and manipulate your results
 #' subset(out, st_name == "port" & arg_value == 2)
