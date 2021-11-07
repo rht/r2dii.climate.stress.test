@@ -20,38 +20,41 @@
 #' @export
 #'
 #' @examplesIf r2dii.climate.stress.test:::is_registered_dev()
+#' # Give the paths to your data explicitely
 #' data <- st_data_paths(
 #'   data = "/home/mauro/tmp/st/ST_INPUTS_MASTER",
 #'   project = "/home/mauro/tmp/st/ST_TESTING_BONDS"
 #' )
-#'
 #' out <- st_bonds(data, term = c(1, 2), shock_year = 2031)
+#'
+#' # Or set these environment variables (e.g. in .Renviron), then omit `data`
+#' readLines(".Renviron")
 #'
 #' # The data frame output helps you quickly explore and manipulate your results
 #' subset(out, st_name == "port" & arg_value == 2)
-st_bonds <- function(data, ..., quiet = TRUE) {
-  rerun_st(data, asset_type = "bonds", ..., quiet = quiet)
+st_bonds <- function(data = st_data_paths(), ..., quiet = TRUE) {
+  st_df(data, asset_type = "bonds", ..., quiet = quiet)
 }
 
 #' @rdname st_bonds
 #' @export
-st_equity <- function(data, ..., quiet = TRUE) {
-  rerun_st(data, asset_type = "equity", ..., quiet = quiet)
+st_equity <- function(data = st_data_paths(), ..., quiet = TRUE) {
+  st_df(data, asset_type = "equity", ..., quiet = quiet)
 }
 
 #' @rdname st_bonds
 #' @export
-st_loans <- function(data, ..., quiet = TRUE) {
-  rerun_st(data, asset_type = "loans", ..., quiet = quiet)
+st_loans <- function(data = st_data_paths(), ..., quiet = TRUE) {
+  st_df(data, asset_type = "loans", ..., quiet = quiet)
 }
 
-rerun_st <- function(data, asset_type, ..., quiet = TRUE) {
+st_df <- function(data, asset_type, ..., quiet = TRUE) {
   args <- enlist_args(data, asset_type, ..., quiet = quiet)
 
   args %>%
     map(~ exec(st, !!!.x)) %>%
     enframe(value = "st_result") %>%
-    restructure_rerun_st() %>%
+    restructure_st_df() %>%
     unnest(st_result)
 }
 
@@ -93,7 +96,7 @@ abort_if_more_than_one_argument_is_long <- function(data) {
   invisible(data)
 }
 
-restructure_rerun_st <- function(data) {
+restructure_st_df <- function(data) {
   data %>%
     separate(.data$name, into = c("arg_name", "arg_value"), sep = "___") %>%
     unnest(cols = .data$st_result) %>%

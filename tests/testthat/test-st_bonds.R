@@ -2,7 +2,7 @@ test_that("with no argument with multiple values errors gracefully", {
   skip_if_not(is_registered_dev())
 
   data <- st_data_paths()
-  expect_snapshot_error(rerun_st(data, asset_type = "bonds", term = 1))
+  expect_snapshot_error(st_df(data, asset_type = "bonds", term = 1))
 })
 
 test_that("with more than one long stress-test argument errors gracefully", {
@@ -11,7 +11,7 @@ test_that("with more than one long stress-test argument errors gracefully", {
   long1 <- range(lgd_senior_claims_range_lookup)
   expect_no_error(
     suppressWarnings(
-      rerun_st(
+      st_df(
         st_data_paths(),
         "bonds",
         lgd_senior_claims = long1,
@@ -22,7 +22,7 @@ test_that("with more than one long stress-test argument errors gracefully", {
 
   long2 <- range(terminal_value_range_lookup)
   expect_snapshot_error(
-    rerun_st(
+    st_df(
       st_data_paths(),
       "bonds",
       lgd_senior_claims = long1,
@@ -37,7 +37,7 @@ test_that("iterates over the long argument", {
 
   long1 <- range(lgd_senior_claims_range_lookup)
   out <- suppressWarnings(
-    rerun_st(
+    st_df(
       st_data_paths(),
       "bonds",
       lgd_senior_claims = long1,
