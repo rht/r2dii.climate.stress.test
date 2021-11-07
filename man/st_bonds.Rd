@@ -2,11 +2,20 @@
 % Please edit documentation in R/st_bonds.R
 \name{st_bonds}
 \alias{st_bonds}
+\alias{st_write_bonds}
+\alias{st_write_equity}
+\alias{st_write_loans}
 \alias{st_equity}
 \alias{st_loans}
 \title{Sensitivity analysis: \code{run_stress_test()} multiple times}
 \usage{
 st_bonds(data = st_data_paths(), ..., quiet = TRUE)
+
+st_write_bonds(data = st_data_paths(), destdir = tempdir(), ..., quiet = TRUE)
+
+st_write_equity(data = st_data_paths(), destdir = tempdir(), ..., quiet = TRUE)
+
+st_write_loans(data = st_data_paths(), destdir = tempdir(), ..., quiet = TRUE)
 
 st_equity(data = st_data_paths(), ..., quiet = TRUE)
 
@@ -41,10 +50,18 @@ data <- st_data_paths(
 # Or set these environment variables (e.g. in .Renviron), then omit `data`
 data
 
-out <- st_bonds(term = c(1, 2), shock_year = 2031)
+out <- suppressWarnings(st_bonds(term = c(1, 2)))
 
 # The data frame output helps you quickly explore and manipulate your results
 subset(out, st_name == "port" & arg_value == 2)
+
+# If the output doesn't fit in memory, instead write them one by one to disk
+path <- path(tempdir(), "st")
+dir_create(path)
+suppressWarnings(st_write_bonds(destdir = path, term = c(1, 2)))
+
+# You may read all results at once
+read_csv(dir_ls(path, recurse = TRUE), id = "path", show_col_types = FALSE)
 \dontshow{\}) # examplesIf}
 }
 \seealso{

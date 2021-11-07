@@ -28,12 +28,47 @@
 #' # Or set these environment variables (e.g. in .Renviron), then omit `data`
 #' data
 #'
-#' out <- st_bonds(term = c(1, 2), shock_year = 2031)
+#' out <- suppressWarnings(st_bonds(term = c(1, 2)))
 #'
 #' # The data frame output helps you quickly explore and manipulate your results
 #' subset(out, st_name == "port" & arg_value == 2)
+#'
+#' # If the output doesn't fit in memory, instead write them one by one to disk
+#' path <- path(tempdir(), "st")
+#' dir_create(path)
+#' suppressWarnings(st_write_bonds(destdir = path, term = c(1, 2)))
+#'
+#' # You may read all results at once
+#' read_csv(dir_ls(path, recurse = TRUE), id = "path", show_col_types = FALSE)
 st_bonds <- function(data = st_data_paths(), ..., quiet = TRUE) {
   st_df(data, asset_type = "bonds", ..., quiet = quiet)
+}
+
+#' @rdname st_bonds
+#' @export
+st_write_bonds <- function(data = st_data_paths(),
+                           destdir = tempdir(),
+                           ...,
+                           quiet = TRUE) {
+  st_write(data, asset_type = "bonds", destdir = destdir, ..., quiet = quiet)
+}
+
+#' @rdname st_bonds
+#' @export
+st_write_equity <- function(data = st_data_paths(),
+                           destdir = tempdir(),
+                           ...,
+                           quiet = TRUE) {
+  st_write(data, asset_type = "equity", destdir = destdir, ..., quiet = quiet)
+}
+
+#' @rdname st_bonds
+#' @export
+st_write_loans <- function(data = st_data_paths(),
+                           destdir = tempdir(),
+                           ...,
+                           quiet = TRUE) {
+  st_write(data, asset_type = "loans", destdir = destdir, ..., quiet = quiet)
 }
 
 #' @rdname st_bonds
@@ -56,6 +91,18 @@ st_df <- function(data, asset_type, ..., quiet = TRUE) {
     enframe(value = "st_result") %>%
     restructure_st_df() %>%
     unnest(st_result)
+}
+
+st_write <- function(data, asset_type, destdir = tempdir(), ..., quiet = TRUE) {
+  args <- enlist_args(data, asset_type, ..., quiet = quiet)
+
+  for (i in seq_along(args)) {
+    out <- exec(st, !!!args[[i]])
+    out <- unnest(out, st_result)
+    readr::write_csv(out, file = path(destdir, glue("{names(args)[[i]]}.csv")))
+  }
+
+  invisible(data)
 }
 
 enlist_args <- function(data, asset_type, ..., quiet) {
