@@ -42,6 +42,9 @@ over multiple values of one and only one argument of \code{\link[=run_stress_tes
 }
 \examples{
 \dontshow{if (r2dii.climate.stress.test:::is_registered_dev()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+library(fs)
+library(readr, warn.conflicts = FALSE)
+
 # Give the paths to your data explicitely
 data <- st_data_paths(
   data = "/home/mauro/tmp/st/ST_INPUTS_MASTER",
@@ -55,7 +58,7 @@ out <- suppressWarnings(st_bonds(term = c(1, 2)))
 # The data frame output helps you quickly explore and manipulate your results
 subset(out, st_name == "port" & arg_value == 2)
 
-# If the output doesn't fit in memory, instead write them one by one to disk
+# If the output doesn't fit in memory, instead write to disk one file per run
 path <- path(tempdir(), "st")
 dir_create(path)
 suppressWarnings(st_write_bonds(destdir = path, term = c(1, 2)))
