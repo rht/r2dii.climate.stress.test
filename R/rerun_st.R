@@ -1,18 +1,18 @@
 #' Sensitivity analysis: `run_stress_test()` multiple times
 #'
-#' This function performs the so called "sensitivity analysis". It runs
-#' [run_stress_test()] multiple times, iterating over multiple values of one and
-#' only one argument of [run_stress_test()].
+#' These functions performs the so called "sensitivity analysis" for the asset
+#' type in their name. They run [run_stress_test()] multiple times, iterating
+#' over multiple values of one and only one argument of [run_stress_test()].
 #'
 #' @param data Character vector of length 2. Paths to the directories
 #'   ST_INPUTS_MASTER and ST_TESTING_\{aset-type\}, e.g. ST_TESTING_BONDS,
 #'   respectively. These directories must have the files expected by the
-#'   stress-test project.
-#' @param asset_type An atomic character vector. Either "bonds", "equity", or
-#'   "loans".
+#'   stress-test project. The easiest way to create this object is with
+#'   [st_data_paths()].
 #' @param ... Arguments passed to [run_stress_test()].
 #' @param quiet Logical. Print non-condiiton messages to the console?
 #'
+#' @seealso [st_data_paths()].
 #' @family main functions
 #'
 #' @return A data frame.
@@ -25,10 +25,26 @@
 #'   project = "/home/mauro/tmp/st/ST_TESTING_BONDS"
 #' )
 #'
-#' out <- rerun_st(data, "bonds", term = c(1, 2, 3))
+#' out <- rerun_st_bonds(data, term = c(1, 2), shock_year = 2031)
 #'
 #' # The data frame output helps you quickly explore and manipulate your results
 #' subset(out, st_name == "port" & arg_value == 2)
+rerun_st_bonds <- function(data, ..., quiet = TRUE) {
+  rerun_st(data, asset_type = "bonds", ..., quiet = quiet)
+}
+
+#' @rdname rerun_st_bonds
+#' @export
+rerun_st_equity <- function(data, ..., quiet = TRUE) {
+  rerun_st(data, asset_type = "equity", ..., quiet = quiet)
+}
+
+#' @rdname rerun_st_bonds
+#' @export
+rerun_st_loans <- function(data, ..., quiet = TRUE) {
+  rerun_st(data, asset_type = "loans", ..., quiet = quiet)
+}
+
 rerun_st <- function(data, asset_type, ..., quiet = TRUE) {
   args <- enlist_args(data, asset_type, ..., quiet = quiet)
 

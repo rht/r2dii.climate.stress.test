@@ -57,6 +57,6 @@ Run stress testing for provided asset type.
 }
 \seealso{
 Other main functions: 
-\code{\link{rerun_st}()}
+\code{\link{rerun_st_bonds}()}
 }
 \concept{main functions}
